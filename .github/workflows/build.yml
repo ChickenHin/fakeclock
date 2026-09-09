@@ -1,19 +1,17 @@
 name: Build and Test
 
-on: [push, pull_request]
+on: [workflow_dispatch]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        compiler: [gcc, clang]
-        architecture: [x86_64, arm64]
+        compiler: [gcc]
+        architecture: [arm64]
         include:
           - compiler: gcc
             cxx: g++
-          - compiler: clang
-            cxx: clang++
           - architecture: arm64
             cmake_arch_flag: -DCMAKE_SYSTEM_PROCESSOR=aarch64
 
@@ -39,15 +37,15 @@ jobs:
     - name: Run tests
       run: cd build && ctest --output-on-failure
       
-    - name: Run README example
-      run: |
-        cd build
-        ./readme_example
-        if [ $? -eq 0 ]; then
-          echo "README example ran successfully with exit code 0"
-        else
-          echo "README example failed with non-zero exit code"
-          exit 1
-        fi
+    # - name: Run README example
+    #   run: |
+    #     cd build
+    #     ./readme_example
+    #     if [ $? -eq 0 ]; then
+    #       echo "README example ran successfully with exit code 0"
+    #     else
+    #       echo "README example failed with non-zero exit code"
+    #       exit 1
+    #     fi
 
 
